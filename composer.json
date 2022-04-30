@@ -1,0 +1,11 @@
+{
+  "require": {
+    "guzzlehttp/guzzle": "^7.4",
+    "spatie/data-transfer-object": "^2.8"
+  },
+  "autoload": {
+    "psr-4": {
+      "MobinetApi\\": "src/"
+    }
+  }
+}
