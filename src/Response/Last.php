@@ -1,10 +1,10 @@
 <?php
 
-namespace MobinetApi\Response\Device;
+namespace MobinetApi\Response;
 
 use Spatie\DataTransferObject\DataTransferObject;
 
-class Self extends DataTransferObject
+class Last extends DataTransferObject
 {
 	public string $href;
 }

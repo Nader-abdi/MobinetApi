@@ -2,16 +2,22 @@
 
 namespace MobinetApi;
 
+use Anteris\DataTransferObjectFactory\Factory;
 use GuzzleHttp\Client;
-use MobinetApi\Response\Device\AvailableDevice;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Pool;
+use GuzzleHttp\Promise\PromiseInterface;
+use GuzzleHttp\Psr7\Response;
+use MobinetApi\Response\Device\DeviceCollection;
 use MobinetApi\Response\LoginResponse;
+use MobinetApi\Response\Proxy\ProxyCollection;
 
 class MobinetApi
 {
 
 
     private Client $guzzleClient;
-    private $apiToken;
+    private string $apiToken;
 
     public function __construct()
     {
@@ -20,7 +26,7 @@ class MobinetApi
 
 
     /**
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \GuzzleHttp\Exception\GuzzleException|\JsonException
      */
     public function login(string $email, string $password)
     {
@@ -36,17 +42,65 @@ class MobinetApi
     }
 
     /**
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \GuzzleHttp\Exception\GuzzleException|\JsonException
      */
-    public function getAvailableDevice()
+    public function getAvailableDevice(): DeviceCollection
     {
 
-        $response = $this->guzzleClient->request('GET','device',[
+        $response = $this->guzzleClient->request('GET', 'device', [
             'perPage' => 40,
+            'page' => 0,
+            'headers' => $this->getAuthorizationHeader()
+        ]);
+        return new DeviceCollection(GuzzleClient::getResponse($response->getBody()));
+
+    }
+
+    /**
+     * @throws \GuzzleHttp\Exception\GuzzleException|\JsonException
+     */
+    public function getAvailableProxies():ProxyCollection
+    {
+
+        $response = $this->guzzleClient->request('GET','proxy',[
+            'perPage' => 20,
             'page'    => 0,
             'headers' => $this->getAuthorizationHeader()
         ]);
-        return AvailableDevice::immutable(GuzzleClient::getResponse($response->getBody()));
+        return new ProxyCollection(GuzzleClient::getResponse($response->getBody()));
+    }
+
+    public function proxiesChangeIp(ProxyCollection $proxyCollection): PromiseInterface
+    {
+
+        $requests = function () use ($proxyCollection) {
+            foreach ($proxyCollection->items as $item) {
+                $uri = 'proxy/rotate/' . $item->id;
+                yield function () use ($uri) {
+                    return $this->guzzleClient->postAsync($uri, [
+
+                        'headers' => $this->getAuthorizationHeader()
+
+                    ]);
+                };
+            }
+        };
+        $pool = new Pool($this->guzzleClient, $requests(), [
+            'concurrency' => 5,
+            'fulfilled' => static function (Response $response, $index) {
+                echo 'Ok'.$index.PHP_EOL;
+                echo $response->getStatusCode().PHP_EOL;
+            },
+            'rejected' => static function (RequestException $reason, $index) {
+            },
+        ]);
+
+        // Initiate the transfers and create a promise
+        $promise = $pool->promise();
+
+        // Force the pool of requests to complete.
+        $promise->wait(true);
+        return $promise;
     }
 
     private function getAuthorizationHeader(): array

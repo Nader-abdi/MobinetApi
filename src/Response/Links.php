@@ -1,6 +1,6 @@
 <?php
 
-namespace MobinetApi\Response\Device;
+namespace MobinetApi\Response;
 
 use Spatie\DataTransferObject\DataTransferObject;
 

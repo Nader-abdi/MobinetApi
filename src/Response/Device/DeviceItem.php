@@ -2,9 +2,12 @@
 
 namespace MobinetApi\Response\Device;
 
+use MobinetApi\Response\DaysActivity;
+use MobinetApi\Response\Geo;
+use MobinetApi\Response\Isp;
 use Spatie\DataTransferObject\DataTransferObject;
 
-class Items extends DataTransferObject
+class DeviceItem extends DataTransferObject
 {
 	public int $id;
 	public string $current_ip;
@@ -39,7 +42,7 @@ class Items extends DataTransferObject
 	public DaysActivity $days_activity;
 	public int $uptime;
 
-	/** @var \MobinetApi\Response\Device\HourlyActivity[] $hourly_activity */
+	/** @var \MobinetApi\Response\HourlyActivity[] $hourly_activity */
 	public array $hourly_activity;
 	public bool $rotate_allowed;
 	public bool $is_rotate_blocked;

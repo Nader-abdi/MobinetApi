@@ -36,9 +36,12 @@ class GuzzleClient
     }
 
 
+    /**
+     * @throws \JsonException
+     */
     public static function getResponse(StreamInterface $response):array{
 
-        return json_decode($response,true);
+        return json_decode($response, true, 512, JSON_THROW_ON_ERROR);
     }
 
 }
