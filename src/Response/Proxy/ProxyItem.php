@@ -29,7 +29,7 @@ class ProxyItem extends DataTransferObject
 	public Geo $geo;
 	public string $location;
 	public Isp $isp;
-	public int $rotating;
+	public  $rotating;
 	public bool $on_rotate;
 	public int $internet_type;
 	public $proxy_limit_time;
