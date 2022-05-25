@@ -41,6 +41,7 @@ class DeviceItem extends DataTransferObject
 	public string $location;
 	public DaysActivity $days_activity;
 	public int $uptime;
+    public $enable_local_change_ip;
 
 	/** @var \MobinetApi\Response\HourlyActivity[] $hourly_activity */
 	public array $hourly_activity;
