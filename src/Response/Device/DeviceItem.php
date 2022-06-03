@@ -44,6 +44,7 @@ class DeviceItem extends DataTransferObject
     public $enable_local_change_ip;
     public $version;
     public $app_type;
+    public $is_owner;
 
 	/** @var \MobinetApi\Response\HourlyActivity[] $hourly_activity */
 	public array $hourly_activity;
