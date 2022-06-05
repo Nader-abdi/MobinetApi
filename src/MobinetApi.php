@@ -2,7 +2,6 @@
 
 namespace MobinetApi;
 
-use Anteris\DataTransferObjectFactory\Factory;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Pool;

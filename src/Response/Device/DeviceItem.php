@@ -5,9 +5,9 @@ namespace MobinetApi\Response\Device;
 use MobinetApi\Response\DaysActivity;
 use MobinetApi\Response\Geo;
 use MobinetApi\Response\Isp;
-use Spatie\DataTransferObject\DataTransferObject;
+use Spatie\DataTransferObject\FlexibleDataTransferObject;
 
-class DeviceItem extends DataTransferObject
+class DeviceItem extends FlexibleDataTransferObject
 {
 	public int $id;
 	public string $current_ip;

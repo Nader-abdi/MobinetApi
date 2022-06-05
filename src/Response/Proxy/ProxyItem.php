@@ -5,9 +5,9 @@ namespace MobinetApi\Response\Proxy;
 use MobinetApi\Response\DaysActivity;
 use MobinetApi\Response\Geo;
 use MobinetApi\Response\Isp;
-use Spatie\DataTransferObject\DataTransferObject;
+use Spatie\DataTransferObject\FlexibleDataTransferObject;
 
-class ProxyItem extends DataTransferObject
+class ProxyItem extends FlexibleDataTransferObject
 {
 	public int $id;
 	public $contact_name;
@@ -50,6 +50,7 @@ class ProxyItem extends DataTransferObject
 	public string $ip_port;
 	public DaysActivity $days_activity;
 	public int $uptime;
+	public $is_owner;
 
 	/** @var \MobinetApi\Response\HourlyActivity[] $hourly_activity */
 	public array $hourly_activity;
